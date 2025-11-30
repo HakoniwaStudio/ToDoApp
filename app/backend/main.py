@@ -2,7 +2,13 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.config import settings
 from backend.database.database import engine, Base
-from backend.api import tasks_router
+from backend.api import (
+    tasks_router,
+    categories_router,
+    tags_router,
+    reminders_router,
+    progress_router
+)
 
 # データベーステーブルの作成
 Base.metadata.create_all(bind=engine)
@@ -25,6 +31,10 @@ app.add_middleware(
 
 # APIルーターの登録
 app.include_router(tasks_router, prefix=settings.API_PREFIX)
+app.include_router(categories_router, prefix=settings.API_PREFIX)
+app.include_router(tags_router, prefix=settings.API_PREFIX)
+app.include_router(reminders_router, prefix=settings.API_PREFIX)
+app.include_router(progress_router, prefix=settings.API_PREFIX)
 
 
 @app.get("/")
